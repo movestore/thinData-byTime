@@ -1,0 +1,57 @@
+{
+  "settings": [
+    {
+  "id": "time",
+  "name": "Time",
+  "description": "State the amount of time",
+  "type": "INTEGER",
+  "defaultValue": 1
+},
+{
+  "id": "unit",
+  "name": "Unit",
+  "description": "Select unit of time.",
+  "type": "DROPDOWN",
+  "defaultValue": "hours",
+  "options": [{
+      "value": "seconds",
+      "displayText": "Seconds"
+    },
+    {
+      "value": "minutes",
+      "displayText": "Minutes"
+    },
+    {
+      "value": "hours",
+      "displayText": "Hours"
+    },
+    {
+      "value": "day",
+      "displayText": "Days"
+    },
+    {
+      "value": "week",
+      "displayText": "Weeks"
+    },
+    {
+      "value": "month",
+      "displayText": "Month"
+    },
+	{
+      "value": "year",
+      "displayText": "Year"
+    }]
+}
+    
+    ],
+  "dependencies": {
+    "R": [
+      {
+        "name": "move"
+      },
+      {
+        "name": "foreach"
+      }
+	]
+  }
+}
