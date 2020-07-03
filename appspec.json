@@ -51,7 +51,10 @@
       },
       {
         "name": "foreach"
+      },
+      {
+        "name": "lubridate"
       }
-	]
+     ]
   }
 }
