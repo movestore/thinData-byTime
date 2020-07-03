@@ -12,34 +12,34 @@
   "name": "Unit",
   "description": "Select unit of time.",
   "type": "DROPDOWN",
-  "defaultValue": "hours",
+  "defaultValue": "hour",
   "options": [{
-      "value": "seconds",
-      "displayText": "Seconds"
+      "value": "second",
+      "displayText": "Second(s)"
     },
     {
-      "value": "minutes",
-      "displayText": "Minutes"
+      "value": "minute",
+      "displayText": "Minute(s)"
     },
     {
-      "value": "hours",
-      "displayText": "Hours"
+      "value": "hour",
+      "displayText": "Hour(s)"
     },
     {
       "value": "day",
-      "displayText": "Days"
+      "displayText": "Day(s)"
     },
     {
       "value": "week",
-      "displayText": "Weeks"
+      "displayText": "Week(s)"
     },
     {
       "value": "month",
-      "displayText": "Month"
+      "displayText": "Month(s)"
     },
 	{
       "value": "year",
-      "displayText": "Year"
+      "displayText": "Year(s)"
     }]
 }
     
