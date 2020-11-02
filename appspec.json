@@ -14,11 +14,11 @@
   "type": "DROPDOWN",
   "defaultValue": "hour",
   "options": [{
-      "value": "second",
+      "value": "sec",
       "displayText": "Second(s)"
     },
     {
-      "value": "minute",
+      "value": "min",
       "displayText": "Minute(s)"
     },
     {
@@ -32,14 +32,6 @@
     {
       "value": "week",
       "displayText": "Week(s)"
-    },
-    {
-      "value": "month",
-      "displayText": "Month(s)"
-    },
-	{
-      "value": "year",
-      "displayText": "Year(s)"
     }]
 }
     
@@ -50,10 +42,11 @@
         "name": "move"
       },
       {
-        "name": "foreach"
-      },
-      {
         "name": "lubridate"
+      }
+	  ,
+      {
+        "name": "foreach"
       }
      ]
   }
