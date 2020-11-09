@@ -2,15 +2,15 @@
   "settings": [
     {
   "id": "time",
-  "name": "Time",
-  "description": "State the amount of time",
-  "type": "INTEGER",
-  "defaultValue": 1
+  "name": "Time resolution",
+  "description": "State the amount of time.",
+  "type": "DOUBLE",
+  "defaultValue": null
 },
 {
   "id": "unit",
   "name": "Unit",
-  "description": "Select unit of time.",
+  "description": "Select unit of time resolution.",
   "type": "DROPDOWN",
   "defaultValue": "hour",
   "options": [{
