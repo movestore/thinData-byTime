@@ -4,7 +4,7 @@ library('foreach')
 
 rFunction <- function(time=NULL, unit=NULL, meth="simple", data) 
 {
-  Sys.setenv(tz="GMT") 
+  Sys.setenv(tz="UTC") 
   if (is.null(unit))
   {
     logger.info(paste0("You have not chosen a unit for your resolution. Please add one of the following: 'sec', 'min','hour','day','week'. Here we impose 'hour' if a time resolution is provided."))
