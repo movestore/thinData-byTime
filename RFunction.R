@@ -1,45 +1,47 @@
 library('move')
 library('lubridate')
-library('foreach')
+library("amt")
 
-rFunction <- function(time=NULL, unit=NULL, meth="simple", data) 
-{
+rFunction <- function(time=NULL, unit=NULL, toleranceTime=0, toleranceUnit="seconds", data){
   Sys.setenv(tz="UTC") 
-  if (is.null(unit))
-  {
-    logger.info(paste0("You have not chosen a unit for your resolution. Please add one of the following: 'sec', 'min','hour','day','week'. Here we impose 'hour' if a time resolution is provided."))
+  if(is.null(unit)){
+    logger.info(paste0("You have not chosen a unit for your resolution. Please add one of the following: 'sec', 'min','hour','day','week'. Here we impose 'hour' if no time unit is provided."))
     unit <- 'hour'
   }
-  
-  if (is.null(time))
-  {
+  if(is.null(time)){
     logger.info(paste0("You have not chosen a resolution. Please add one. Return full data set."))
-    result <- data
-  } else
-  {
-    logger.info(paste("You have selected to thin the data to a resolution of",time,unit,"."))
-
-    if (meth=="simple")
-    {
-      result <- data[!duplicated(paste0(round_date(timestamps(data), paste0(time," ",unit)), trackId(data))),]
-    } else #if (meth %in% c("closest","first","all") #need to ask move people
-    #{
-    #  logger.info(paste("You have selected advanced thinning. Long duration for large data sets. Here impose tolerance of",time/2,unit,".")
-    #  itv <- as.difftime(tim=time,units=paste0(unit,"s"))
-    #  tol <- itv/2 #careful, this parameter is very important not to select too small
-    #  data.split <- move::split(data)
-    #  result <- foreach(datai = data.split) %do% {
-    #    print(namesIndiv(datai))
-    #    burst <- thinTrackTime(x=datai,interval=itv,tolerance = tol, criteria=meth[1])  #careful here output is MoveBurst! And output aims to provide segments with min and max (!) time requirements! Think here only min requirement necessary
-    #    sel <- moveStack(move::split(burst)[names(move::split(burst))=="selected"])
-    #    move(x=coordinates(sel)[,1],y=coordinates(burst)[sel,2],time=timestamps(burst)[sel],data=burst@data[sel,],proj="+proj=longlat +ellps=WGS84",sensor=sensor(burst)[sel],animal=namesIndiv(datai))
-    #  }
-    #  names(result) <- names(data.split)
-    #} else 
-    {
-      logger.info("No proper method provided. Return full data set.")
-      result <- data
+    thinned_data <- data
+  }
+  if(!is.null(time)&!is.null(unit)&!is.null(toleranceTime)&!is.null(toleranceUnit)){
+    tol <- period(num = toleranceTime, units = toleranceUnit)
+    timerate <- period(num = time, units = unit)
+    if(tol>=timerate){
+      logger.info(paste0("You have chosen a tolerance that is equal or higer than the chosen time resolution. The tolerance must always be smaller. Return full data set."))
+      thinned_data <- data
+    }else{
+      logger.info(paste("You have selected to thin the data to a resolution of",time,unit,"with a tolerance of",toleranceTime, toleranceUnit,"."))
+      
+      # Create a track_xyt object (amt package)
+      data_tracks <- track(x=coordinates(data)[,1],
+                           y=coordinates(data)[,2],
+                           t=timestamps(data),
+                           id=trackId(data),
+                           crs = CRS(projection(data)))
+      # subsample to 1 location per chosen resolution and tolerance
+      data_tracks_L <- split(data_tracks, data_tracks$id)
+      data_tracks_thinned_L <- lapply(data_tracks_L, function(x){track_resample(x, rate = timerate, tolerance = tol, start = 1)}) ## "start" DETERMINES THE POSTION FROM WHICH TO START THE THINING, WE COULD THINK ABOUT IF IT MAKES SENSE TO ADD IT
+     
+      # # Create move object 
+      # thinned_data <- moveStack(lapply(data_tracks_thinned_L, move), forceTz="UTC")
+      
+      # probably the more complicated way, but it makes sure the movestack stays as is without losing any of the attributes when transforming back and forth
+      thinned_data_L <- lapply(names(data_tracks_thinned_L), function(indv){
+        mv <- data[[indv]]
+        mvt <- mv[timestamps(mv)%in%data_tracks_thinned_L[[indv]]$t_,]
+        return(mvt)
+      })
+      thinned_data <- moveStack(thinned_data_L, forceTz="UTC")
     }
   }
-  result
+  return(thinned_data)
 }
