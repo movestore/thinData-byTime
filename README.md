@@ -8,6 +8,7 @@ Movement data are thinned (subsampled) to a user-provided minimum time resolutio
 
 ## Documentation
 This App subsamples (thins) the provided Movement data set to a maximum time resolution with some tolerance (optional). This means that intermediate points are deleted so that the time difference between two positions (of the same individual) is at least the provided resolution, e.g. "one position per hour" leads to time difference of at least one hour. 
+
 Optionally a time tolerance value can be provided, accounting this way for the small deviations that the original fix rates often have, as they are mostly not exact (e.g. tag has a fix rate of "1 position every 5 mins", but allows 2mins to search for GPS signal, so the actual sampling rate of the retrieved data will be between 3-7mins (excluding missed fixes)). When choosing to thin the data to e.g. "1 position per hour with a tolerance of 5 minutes", these deviations in the data get taken into account and more data are retained in the thinned dataset. Which tolerance value makes sense to choose, will probably depend on the sampling rate of the data (e.g. use the app "Time Lag Between Locations" to find out sampling rate of the data) and the purpose of thinning the data (e.g. subsequent applied methods). The default tolerance is "0 seconds", so no tolerance is applied.
 
 ### Input data
