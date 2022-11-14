@@ -14,11 +14,45 @@
   "type": "DROPDOWN",
   "defaultValue": "hour",
   "options": [{
-      "value": "sec",
+      "value": "second",
       "displayText": "Second(s)"
     },
     {
-      "value": "min",
+      "value": "minute",
+      "displayText": "Minute(s)"
+    },
+    {
+      "value": "hour",
+      "displayText": "Hour(s)"
+    },
+    {
+      "value": "day",
+      "displayText": "Day(s)"
+    },
+    {
+      "value": "week",
+      "displayText": "Week(s)"
+    }]
+},
+{
+  "id": "toleranceTime",
+  "name": "Tolerance time resolution",
+  "description": "State the amount of time that can be used as tolerance when thining the data. E.g. 1hour with a tolerance of 5mins, will result in a sampling rate of 55min-1h5min. This value should always be smaller than the 'Time resolution' above.",
+  "type": "DOUBLE",
+  "defaultValue": 0
+},
+{
+  "id": "toleranceUnit",
+  "name": "Tolerance time unit",
+  "description": "Select unit of time tolerance.",
+  "type": "DROPDOWN",
+  "defaultValue": "second",
+  "options": [{
+      "value": "second",
+      "displayText": "Second(s)"
+    },
+    {
+      "value": "minute",
       "displayText": "Minute(s)"
     },
     {
@@ -45,7 +79,7 @@
         "name": "lubridate"
       },
       {
-        "name": "foreach"
+        "name": "amt"
       }
      ]
   },
@@ -57,7 +91,8 @@
     "thin",
     "subsample",
     "time",
-	"resolution"
+	"resolution",
+	"resample"
   ],
   "people": [
     {
@@ -76,7 +111,7 @@
       "lastName": "Scharf",
       "email": "ascharf@ab.mpg.de",
       "roles": ["author"],
-      "orcid": null,
+      "orcid": "0000-0002-3357-8533",
       "affiliation": "Max-Planck-Institute of Animal Behavior",
       "affiliationRor": "https://ror.org/026stee22"
     }
