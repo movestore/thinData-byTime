@@ -20,19 +20,19 @@ moveStack in Movebank format
 ### Artefacts
 none
 
-### Parameters 
-`time`: Numeric variable to define the time resolution. Has to be seen in combination with `unit`. Example: 1.5.
+### Settings 
+**Time resolution (`time`):** Numeric variable to define the time resolution. Has to be seen in combination with `unit`. Example: 1.5.
 
-`unit`: Dropdown to select the time unit that the resolution is given in. Defines the `time` numeric variable. Example: "hour". 
+**Unit (`unit`):** Dropdown to select the time unit that the resolution is given in. Defines the `time` numeric variable. Example: "hour". 
 
-`toleranceTime`: Numeric variable to define the tolerance time resolution. Has to be seen in combination with `toleranceUnit`. Default is 0. Example: 10. 
+**Tolerance time resolution (`toleranceTime`):** Numeric variable to define the tolerance time resolution. Has to be seen in combination with `toleranceUnit`. Default is 0. Example: 10. 
 
-`toleranceUnit`: Dropdown to select the time unit that the tolerance is given in. Defines the `toleranceTime` numeric variable. Default is "Seconds". Example: "minutes". 
+**Tolerance time unit (`toleranceUnit`):** Dropdown to select the time unit that the tolerance is given in. Defines the `toleranceTime` numeric variable. Default is "Seconds". Example: "minutes". 
 
 
 ### Null or error handling:
-**Parameter `time`:** If no time resolution parameter is provided the App does not thin the data and returns the input data set. If a non-numeric value is entered by the user this case is handled as NULL, i.e. the App returns the input data set.
+**Setting `time`:** If no time resolution parameter is provided the App does not thin the data and returns the input data set. If a non-numeric value is entered by the user this case is handled as NULL, i.e. the App returns the input data set.
 
-**Parameter `unit`:** If no unit is selected from the dropdown menu the default "hour" is used and a related warning is given.
+**Setting `unit`:** If no unit is selected from the dropdown menu the default "hour" is used and a related warning is given.
 
 **Data:** The output data set will retain at least the first position for each individual and should therefore not become empty.
