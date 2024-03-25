@@ -1,47 +1,18 @@
-library('move')
-library('lubridate')
-library("amt")
+library('move2')
+library('dplyr')
 
-rFunction <- function(time=NULL, unit=NULL, toleranceTime=0, toleranceUnit="seconds", data){
-  Sys.setenv(tz="UTC") 
-  if(is.null(unit)){
-    logger.info(paste0("You have not chosen a unit for your resolution. Please add one of the following: 'sec', 'min','hour','day','week'. Here we impose 'hour' if no time unit is provided."))
-    unit <- 'hour'
-  }
-  if(is.null(time)){
-    logger.info(paste0("You have not chosen a resolution. Please add one. Return full data set."))
-    thinned_data <- data
-  }
-  if(!is.null(time)&!is.null(unit)&!is.null(toleranceTime)&!is.null(toleranceUnit)){
-    tol <- period(num = toleranceTime, units = toleranceUnit)
-    timerate <- period(num = time, units = unit)
-    if(tol>=timerate){
-      logger.info(paste0("You have chosen a tolerance that is equal or higer than the chosen time resolution. The tolerance must always be smaller. Return full data set."))
-      thinned_data <- data
-    }else{
-      logger.info(paste("You have selected to thin the data to a resolution of",time,unit,"with a tolerance of",toleranceTime, toleranceUnit,"."))
-      
-      # Create a track_xyt object (amt package)
-      data_tracks <- track(x=coordinates(data)[,1],
-                           y=coordinates(data)[,2],
-                           t=timestamps(data),
-                           id=trackId(data),
-                           crs = CRS(projection(data)))
-      # subsample to 1 location per chosen resolution and tolerance
-      data_tracks_L <- split(data_tracks, data_tracks$id)
-      data_tracks_thinned_L <- lapply(data_tracks_L, function(x){track_resample(x, rate = timerate, tolerance = tol, start = 1)}) ## "start" DETERMINES THE POSTION FROM WHICH TO START THE THINING, WE COULD THINK ABOUT IF IT MAKES SENSE TO ADD IT
-     
-      # # Create move object 
-      # thinned_data <- moveStack(lapply(data_tracks_thinned_L, move), forceTz="UTC")
-      
-      # probably the more complicated way, but it makes sure the movestack stays as is without losing any of the attributes when transforming back and forth
-      thinned_data_L <- lapply(names(data_tracks_thinned_L), function(indv){
-        mv <- data[[indv]]
-        mvt <- mv[timestamps(mv)%in%data_tracks_thinned_L[[indv]]$t_,]
-        return(mvt)
-      })
-      thinned_data <- moveStack(thinned_data_L, forceTz="UTC")
-    }
+rFunction <- function(time_numb=NULL, time_unit=NULL, data){
+  tl <- mt_time_lags(data, units = "min")
+  logger.info(paste0("Timelag summary of your data. Minimum ",round(min(tl,na.rm=T),3)," minutes","; meadian: ",round(median(tl,na.rm=T),3)," minutes", " ; maximum: ",round(max(tl,na.rm=T),3)," minutes"))
+  logger.info(paste("Your data will be thinned as requested to one location per",time_numb,time_unit))
+  data <- data[order(mt_track_id(data),mt_time(data)),] # just to be safe
+  thinned_data <- mt_filter_per_interval(data,criterion="first",unit=paste(time_numb,time_unit))
+  thinned_data <- thinned_data %>% group_by(mt_track_id()) %>% slice(-1) ## the thinning happens within the time window, so the 1st location is mostly off. After the 1st location the intervals are regular if the data allow for it
+  if(nrow(thinned_data)>0){
+  tlt <- mt_time_lags(thinned_data, units = "min")
+  logger.info(paste0("Timelag summary of your thinned data. Minimum ",round(min(tlt,na.rm=T),3)," minutes","; meadian: ",round(median(tlt,na.rm=T),3)," minutes", " ; maximum: ",round(max(tlt,na.rm=T),3)," minutes. ",length(tlt[which(round(tlt)<round(median(tlt,na.rm=T)))]), " timelags (from ",length(tlt)," in total) are below the median."))
+  } else {
+    logger.info(paste0("With the current settings not data are be retained. The resulting dataset is empty."))
   }
   return(thinned_data)
 }
