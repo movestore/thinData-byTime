@@ -1,28 +1,29 @@
 {
+  "version": "1.2",
   "settings": [
     {
   "id": "time",
   "name": "Time resolution",
-  "description": "State the amount of time to which you want to thin the data.",
+  "description": "State the amount of time to which you want to thin the data. Default is 1",
   "type": "DOUBLE",
-  "defaultValue": null
+  "defaultValue": 1
 },
 {
   "id": "unit",
   "name": "Unit",
-  "description": "Select unit of time resolution.",
+  "description": "Select unit of time resolution. Default is 'Hour'",
   "type": "DROPDOWN",
   "defaultValue": "hour",
   "options": [{
-      "value": "second",
+      "value": "asecond",
       "displayText": "Second(s)"
     },
     {
-      "value": "minute",
+      "value": "aminute",
       "displayText": "Minute(s)"
     },
     {
-      "value": "hour",
+      "value": "ahour",
       "displayText": "Hour(s)"
     },
     {
@@ -32,54 +33,21 @@
     {
       "value": "week",
       "displayText": "Week(s)"
-    }]
-},
-{
-  "id": "toleranceTime",
-  "name": "Tolerance time resolution",
-  "description": "State the amount of time that can be used as tolerance when thining the data. E.g. 1hour with a tolerance of 5mins, will result in a sampling rate of 55min-1h5min. This value should always be smaller than the 'Time resolution' above.",
-  "type": "DOUBLE",
-  "defaultValue": 0
-},
-{
-  "id": "toleranceUnit",
-  "name": "Tolerance time unit",
-  "description": "Select unit of time tolerance.",
-  "type": "DROPDOWN",
-  "defaultValue": "second",
-  "options": [{
-      "value": "second",
-      "displayText": "Second(s)"
     },
     {
-      "value": "minute",
-      "displayText": "Minute(s)"
-    },
-    {
-      "value": "hour",
-      "displayText": "Hour(s)"
-    },
-    {
-      "value": "day",
-      "displayText": "Day(s)"
-    },
-    {
-      "value": "week",
-      "displayText": "Week(s)"
+      "value": "month",
+      "displayText": "Month"
     }]
 }
-    
-    ],
+],
+
   "dependencies": {
     "R": [
       {
-        "name": "move"
+        "name": "move2"
       },
       {
-        "name": "lubridate"
-      },
-      {
-        "name": "amt"
+        "name": "dplyr"
       }
      ]
   },
@@ -115,8 +83,5 @@
       "affiliation": "Max-Planck-Institute of Animal Behavior",
       "affiliationRor": "https://ror.org/026stee22"
     }
-  ],
-  "documentation" : {
-    "url": "https://github.com/movestore/thinData-byTime/blob/master/README.md"
-  }
+  ]
 }

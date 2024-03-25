@@ -4,35 +4,31 @@ MoveApps
 Github repository: *github.com/movestore/thinData-byTime*
 
 ## Description
-Movement data are thinned (subsampled) to a user-provided minimum time resolution. 
+Movement data are thinned (subsampled) to a user-provided time interval. 
 
 ## Documentation
-This App subsamples (thins) the provided Movement data set to a maximum time resolution with some tolerance (optional). This means that intermediate points are deleted so that the time difference between two positions (of the same individual) is at least the provided resolution, e.g. "one position per hour" leads to time difference of at least one hour. 
+This App subsamples (thins) the provided Movement data set to the set time interval.
+The App selects the first event per defined interval (time window). Depending on the data, the time lag between consecutive locations of the thinned data might not correspond exactly to the time interval. 
+For example, if the defined time interval is "1 hour", the App will select the location that within the time window e.g. 10:00:00-10:59:59 is closest to 10 o'clock. If the data are irregular, the thinned data could contain the timestamps 9:05, 10:05, 11:25, 12:05, with the resulting time lags of 1h, 1h20mins, 40mins. 
+When thinning the track to a lower frequency than its original fix rate, the time lags will mostly correspond to the defined time interval.
 
-Optionally a time tolerance value can be provided, accounting this way for the small deviations that the original fix rates often have, as they are mostly not exact (e.g. tag has a fix rate of "1 position every 5 mins", but allows 2mins to search for GPS signal, so the actual sampling rate of the retrieved data will be between 3-7mins (excluding missed fixes)). When choosing to thin the data to e.g. "1 position per hour with a tolerance of 5 minutes", these deviations in the data get taken into account and more data are retained in the thinned dataset. Which tolerance value makes sense to choose, will probably depend on the sampling rate of the data (e.g. use the app "Time Lag Between Locations" to find out sampling rate of the data) and the purpose of thinning the data (e.g. subsequent applied methods). The default tolerance is "0 seconds", so no tolerance is applied.
+After running the App, in the logs a summary (min, median, max in minutes) of the time lags of all tracks will be displayed. The median time lag will mostly correspond to the programmed fix rate of the tags. Which time interval makes sense to choose, will probably depend on the sampling rate of the data (e.g. use the app "Time Lag Between Locations" to find out sampling rate per track of the data before running this App) and the purpose of thinning the data (e.g. subsequent applied methods).
+
 
 ### Input data
-moveStack in Movebank format
+move2_locs
 
 ### Output data
-moveStack in Movebank format
+move2_locs
 
 ### Artefacts
 none
 
 ### Settings 
-**Time resolution (`time`):** Numeric variable to define the time resolution. Has to be seen in combination with `unit`. Example: 1.5.
+**Time resolution (`time_numb`):** Numeric variable to define the time interval. Has to be seen in combination with `time_unit`. Default is 1.
 
-**Unit (`unit`):** Dropdown to select the time unit that the resolution is given in. Defines the `time` numeric variable. Example: "hour". 
-
-**Tolerance time resolution (`toleranceTime`):** Numeric variable to define the tolerance time resolution. Has to be seen in combination with `toleranceUnit`. Default is 0. Example: 10. 
-
-**Tolerance time unit (`toleranceUnit`):** Dropdown to select the time unit that the tolerance is given in. Defines the `toleranceTime` numeric variable. Default is "Seconds". Example: "minutes". 
+**Unit (`time_unit`):** Dropdown to select the time unit that the interval is given in. Defines the `time_numb` numeric variable. Default is hour. 
 
 
 ### Null or error handling:
-**Setting `time`:** If no time resolution parameter is provided the App does not thin the data and returns the input data set. If a non-numeric value is entered by the user this case is handled as NULL, i.e. the App returns the input data set.
-
-**Setting `unit`:** If no unit is selected from the dropdown menu the default "hour" is used and a related warning is given.
-
-**Data:** The output data set will retain at least the first position for each individual and should therefore not become empty.
+**Data:** If the time interval is set to large and no locations are retained, a empty data set will be passed on to the next App, and this App will then give an error.
