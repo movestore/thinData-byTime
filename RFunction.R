@@ -1,5 +1,6 @@
 library('move2')
 library('dplyr')
+library("lubridate")
 
 rFunction <- function(time_numb=NULL, time_unit=NULL, data){
   tl <- mt_time_lags(data, units = "min")
