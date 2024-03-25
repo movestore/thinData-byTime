@@ -1,0 +1,11 @@
+{
+    "meth": "buff",
+    "rad": 200,
+    "dur": 1,
+    "minloc": 1,
+    "dur_unit": "hours",
+    "maxgap": 1,
+    "gap_unit": "days",
+    "clu_transm": "all",
+    "new_dur": 96
+}
