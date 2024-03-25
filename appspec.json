@@ -2,18 +2,18 @@
   "version": "1.2",
   "settings": [
     {
-  "id": "time",
+  "id": "time_numb",
   "name": "Time resolution",
   "description": "State the amount of time to which you want to thin the data. Default is 1",
   "type": "DOUBLE",
   "defaultValue": 1
 },
 {
-  "id": "unit",
+  "id": "time_unit",
   "name": "Unit",
   "description": "Select unit of time resolution. Default is 'Hour'",
   "type": "DROPDOWN",
-  "defaultValue": "hour",
+  "defaultValue": "ahour",
   "options": [{
       "value": "asecond",
       "displayText": "Second(s)"
@@ -63,23 +63,23 @@
 	"resample"
   ],
   "people": [
-    {
-      "firstName": "Andrea",
-      "middleInitials": null,
-      "lastName": "Kölzsch",
-      "email": "akoelzsch@ab.mpg.de",
-      "roles": ["author", "creator"],
-      "orcid": "0000-0003-0193-1563",
-      "affiliation": "Max-Planck-Institute of Animal Behavior",
-      "affiliationRor": "https://ror.org/026stee22"
-    },
 	{
       "firstName": "Anne",
       "middleInitials": "K",
       "lastName": "Scharf",
       "email": "ascharf@ab.mpg.de",
-      "roles": ["author"],
+      "roles": ["author", "creator"],
       "orcid": "0000-0002-3357-8533",
+      "affiliation": "Max-Planck-Institute of Animal Behavior",
+      "affiliationRor": "https://ror.org/026stee22"
+    },
+    {
+      "firstName": "Andrea",
+      "middleInitials": null,
+      "lastName": "Kölzsch",
+      "email": "akoelzsch@ab.mpg.de",
+      "roles": ["author"],
+      "orcid": "0000-0003-0193-1563",
       "affiliation": "Max-Planck-Institute of Animal Behavior",
       "affiliationRor": "https://ror.org/026stee22"
     }
