@@ -5,5 +5,4 @@
 .DS_Store
 data/output/**
 !data/output/.keep
-files_move1
-paper_data2018
+tests/testthat/plot.png
